@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body,
+			ul,
+			li,
+			h2 {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="qq.css" />
+	</head>
+
+	<body onselectstart="return false;">
+		<div class="wrap">
+			<div class="list">
+				<h2><span></span>我的好友</h2>
+				<ul>
+					<li>小佳Love</li>
+					<li>从来就是这么正经</li>
+					<li>leo是个胖子</li>
+					<li>momo不是陌陌</li>
+				</ul>
+				<h2><span></span>企业好友</h2>
+				<ul>
+					<li>习近平</li>
+					<li>普京</li>
+					<li>奥巴马</li>
+				</ul>
+				<h2><span></span>黑名单</h2>
+				<ul>
+					<li>安倍</li>
+					<li>杜特尔特</li>
+				</ul>
+			</div>
+		</div>
+	
+		<script>
+			var list = document.getElementsByTagName("list")[0];
+			var uls = document.getElementsByTagName("ul");
+			var lis = document.getElementsByTagName("li");
+			var h2s = document.getElementsByTagName("h2");
+	
+			for(var i = 0;i<h2s.length;i++){//false对应没有class时，清除其他h2身上的 class，给自己添加class
+				h2s[i].index = i;
+				h2s[i].onoff = false;//(true)对应h2s有class时，清除class
+				h2s[i].onclick = function(){
+	//				if(!this.noff){
+	//					for(var i = 0;i<h2s.length;i++){
+	//						h2s[i].className = "";
+	//						this.className = "active";
+	//						h2s[i].onoff = false;
+	//					}
+	//				}else{
+	//					this.className = "";
+	//					
+	//				}
+	//				this.onoff = !this.onoff;
+	//				console.log(this.onoff = !this.onoff)
+	//			}
+	//		}
+	////		console.log(h2s[0].onoff,h2s[1].onoff,h2s[2].onoff)(-------------------------------------------xxxxxxxxxx------)
+				
+					for(var i = 0;i<h2s.length;i++){
+						if(i != this.index){//当点击的有class时，清除其他2个h2的class
+							h2s[i].className = "";
+							uls[i].style.display = "none";
+							h2s[i].onoff = false;//把其他2个的开关还原成为点中的状态
+						}
+					}	
+					if(this.onoff){
+						this.className = "";//当点中的是有class时，清除它自身的class
+						uls[this.index].style.display = "none";
+					}else{
+						this.className = "active";//当点中的是没有class时，给它添加class
+						uls[this.index].style.display = "block";
+					}
+					this.onoff = !this.onoff;//改变开关的值使其可以来回点
+					console.log(h2s[0].onoff,h2s[1].onoff,h2s[2].onoff)
+				}
+			}
+			for(var i = 0;i<lis.length;i++){
+				lis[i].onoff = false;//为没有class时
+				lis[i].index = i; 
+				lis[i].onmouseover = function(){
+					if(!this.onoff){
+						this.className = "active";
+					}
+				}
+				lis[i].onclick = function(){
+					for(var i =0 ;i<lis.length;i++){
+						lis[i].className = "";
+						lis[i].onoff = false;
+					}
+					if(!this.onoff){
+						this.className = "selected";
+						this.onoff = true;
+					}
+				}
+				lis[i].onmouseout = function(){
+					if(!this.onoff){
+						this.className = "";
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body,
+			ul,
+			li,
+			h2 {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="qq.css" />
+	</head>
+
+	<body onselectstart="return false;">
+		<div class="wrap">
+			<div class="list">
+				<h2 class="header"><span></span>我的好友</h2>
+				<ul>
+					<li>小佳Love</li>
+					<li>从来就是这么正经</li>
+					<li>leo是个胖子</li>
+					<li>momo不是陌陌</li>
+				</ul>
+				<h2><span></span>企业好友</h2>
+				<ul>
+					<li>习近平</li>
+					<li>普京</li>
+					<li>奥巴马</li>
+				</ul>
+				<h2><span></span>黑名单</h2>
+				<ul>
+					<li>安倍</li>
+					<li>杜特尔特</li>
+				</ul>
+			</div>
+		</div>
+		<script>
+			var list = document.getElementsByClassName("list")[0];
+			var h2s = list.getElementsByTagName("h2");
+			var uls = list.getElementsByTagName("ul");
+			var lis = list.getElementsByTagName("li");
+			
+			for(var i = 0;i<h2s.length;i++){
+				h2s[i].index = i;
+				h2s[i].onoff = false;//false表示没有class时，添加class，清空其他h2的class
+				h2s[i].onclick = function(){
+					for(var i = 0;i<h2s.length;i++){
+						if(i != this.index){
+							h2s[i].className = "";
+							uls[i].style.display = "none";
+							h2s[i].onoff = false;
+						}		
+					}
+					if(!this.onoff){
+						this.className = "active";
+						uls[this.index].style.display = "block";
+					}else{
+						this.className = "";
+						uls[this.index].style.display = "none";
+					}
+					this.onoff = !this.onoff;
+				}
+			}
+			
+			for(var i = 0;i<lis.length;i++){
+				lis[i].index = i;
+				lis[i].onoff = false;//表示没有class时
+				lis[i].onmouseover = function(){
+					if(!this.onoff){
+						this.className = "active";
+					}
+				}
+				lis[i].onclick = function(){
+					for(var i =0;i<lis.length;i++){
+						lis[i].className = "";
+						lis[i].onoff = false;
+					}
+					if(!this.onoff){
+						this.className = "selected";
+						this.onoff = true;
+					}
+				}
+				lis[i].onmouseout = function(){
+					if(!this.onoff){
+						this.className = "";
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

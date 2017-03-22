@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body,
+			ul,
+			li,
+			h2 {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="qq.css" />
+	</head>
+
+	<body onselectstart="return false;">
+		<div class="wrap">
+			<div class="list">
+				<h2><span></span>我的好友</h2>
+				<ul>
+					<li>小佳Love</li>
+					<li>从来就是这么正经</li>
+					<li>leo是个胖子</li>
+					<li>momo不是陌陌</li>
+				</ul>
+				<h2><span></span>企业好友</h2>
+				<ul>
+					<li>习近平</li>
+					<li>普京</li>
+					<li>奥巴马</li>
+				</ul>
+				<h2><span></span>黑名单</h2>
+				<ul>
+					<li>安倍</li>
+					<li>杜特尔特</li>
+				</ul>
+			</div>
+		</div>
+		<script>
+		var list = document.getElementsByClassName("list")[0];
+		var h2s = list.getElementsByTagName("h2");
+		var uls = list.getElementsByTagName("ul");
+		var lis = document.getElementsByTagName("li");
+		
+		var last = 0;//定义上一个
+		//为所有h2添加点击处理函数
+		var liLast = 0;
+		var liOnclick = 0;
+		for(var i = 0;i<h2s.length;i++){
+			h2s[i].onoff = true;//定义h2s的onoff的true表示未选中的
+			h2s[i].index = i;
+			h2s[i].onclick = function(){
+				if(this.onoff){//当点击的h2为未选中时/点击显示ul
+					h2s[last].className = "";
+					uls[last].style.display = "";
+					uls[this.index].style.display = "block";
+					h2s[last].onoff = true;
+					this.className = "active";
+					last = this.index;
+					this.onoff = false;
+				}else{//当点击的h2为选中时、点击隐藏ul
+					h2s[last].onoff = false;
+					uls[this.index].style.display = "";
+					this.className = "";
+					last = this.index;
+					this.onoff = true;
+				}
+			}
+		}
+		for(var i = 0;i<lis.length;i++){
+			lis[i].fla = true;//定义未选中的li为true
+			lis[i].index = i;
+			lis[i].onmouseover = function(){
+				if(lis[liLast].fla){//当上一个li为未选中时 ，清除上一个的class
+					lis[liLast].className = "";
+				}
+				if(this.fla){//当抚摸的li为未选中时，给抚摸的li添加class
+					this.className = "active";
+				}
+				liLast = this.index;//改变上一个的值
+			}
+			lis[i].onclick = function(){//点击li的时候
+				lis[liOnclick].className = "";//清除上一个li的class
+				lis[liOnclick].fla = true;//还原上一个li的布尔值
+				this.className = "selected";//给点击的li添加class
+				this.fla = false;//改变点击的li的布尔值
+				liOnclick = this.index;//改变上一个的值
+				console.log( lis[0].fla,lis[1].fla,lis[2].fla,lis[3].fla );
+			}
+			lis[i].onmouseout = function(){//当鼠标移出时
+				if(this.fla){
+					this.className = "";
+				}
+			}
+		}	
+		</script> 
+	</body>
+
+</html>
