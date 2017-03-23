@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#box{
+				width: 200px;
+				height: 320px;
+				margin: 50px auto;
+				padding: 100px;
+				position: relative;
+				border-bottom:1px solid #333333;
+			}
+			#round{
+				width: 200px;
+				height: 200px;
+				border: 1px solid #26D9C7;
+				border-radius: 50%;
+				position: relative;
+				background: url(../../课件/03-图片切换实例/img/img01.jpg);
+			}
+			#stick{
+				width: 2px;
+				height: 80px;
+				border: 1px solid sandybrown;
+				border-radius: 4px;
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				background:sandybrown;
+			}
+			ul{
+				padding: 0;
+				margin: 0;
+				width: 200px;
+				height: 200px;
+				border: 1px solid #26D9C7;
+				border-radius: 50%;
+				position: absolute;
+				left: 100px;
+				top: 100px;
+			}
+			li{
+				list-style: none;
+				width: 2px;
+				height: 80px;
+				border: 1px solid sandybrown;
+				border-radius: 4px;
+				position: absolute;
+				left: 99px;
+				top: 200px;
+				background:sandybrown;
+				transform-origin: center -100px; 
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="box">
+			<div id="round">
+				
+			</div>
+			<ul>
+				
+			</ul>
+			<div id="stick">
+				
+			</div>
+		</div>
+		
+		<script>
+			var round=document.getElementById('round');
+			var ul=document.getElementsByTagName('ul')[0];
+			var li=ul.getElementsByTagName('li');
+			var num=0;
+			var deg=0;
+			var arr=[];
+			var timer=null;
+			
+			timer=setInterval(function(){
+				round.style.transform='rotate('+(num%360)+'deg)';
+				num++;
+				deg=num%360;
+				if(li){
+					for(var i=0;i<li.length;i++){
+						li[i].style.transform='rotate('+(num%360-arr[i])+'deg)';
+					}
+				
+				}
+			},20);
+			document.onmousedown=function(){
+				
+			
+				arr.push(deg);
+				for(var i=0;i<arr.length-1;i++){
+					if(arr[arr.length-1]<arr[i]+4&&arr[arr.length-1]>arr[i]-4){
+						ul.innerHTML+='<li style="top:220px; "></li>';
+						alert('失败了！');
+						clearInterval(timer);
+						return;
+					}
+				}
+				ul.innerHTML+='<li></li>';
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#canvas{
+				background: #000;
+				position: relative;
+			}
+			ul{
+				padding: 0;
+				margin: 0;
+			}
+			#box{
+				width: 400px;
+				margin: auto;
+				position: absolute;
+				left: 50%;
+				top: 70%;
+				
+			}
+			#img{
+				width:400px;
+				position: relative;
+			}
+			#img li{
+				list-style: none;
+				width: 400px;
+				height:100px;
+				position: absolute;
+				border: 1px solid #eee;
+				border-radius:10px;
+				bottom: 0;
+				transform-origin: 30px 50px;
+				transition: 1s;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas">
+			你的浏览器不支持canvas，请更新你的浏览器吧或者更换浏览器比如chrome。
+			
+		</canvas>
+		<div id="box">
+			<ul id="img">
+				
+			</ul>
+		</div>
+		
+		
+		<script>
+			var canvas=document.getElementById('canvas');
+			var ctx=canvas.getContext('2d');
+			canvas.width=window.innerWidth;
+			canvas.height=window.innerHeight;
+			var color_arr=['#FFA54F','#FA8072','#ADFF2F','#7A67EE','#00BFFF','#B23AEE'];
+			var round_arr=[];
+			var timer2=null;
+			var onOff1=true;
+//			function in_round(round){
+//				round.x=Math.round(Math.random()*10-5);    //定义一个圆的x坐标离鼠标位置在-5至5左右。
+//				round.y=Math.round(Math.random()*10-5);	  //定义一个圆的y坐标离鼠标位置在-5至5左右
+//				round.r=Math.round(Math.random()*15+5);		//定义一个圆的半径在5至20左右的范围
+//				round.vx=Math.random()-0.5;                //定义往x轴移动速度在-0.5至0.5的范围
+//				round.vy=Math.random()-0.5;  				//定义往y轴移动速度在-0.5至0.5的范围
+//				ctx.arc(round.x,round.y,round.r,0,Math.PI*2,false);
+//			}
+//			
+			//该函数的功能就是花圆
+			function in_round(round){
+				ctx.beginPath();    //画圆的路径开始，表示，每个圆都有独立开始的路径   防止和其他路径混在一起
+				ctx.fillStyle=round.color;  //花圆的填充的颜色，就是圆的背景色，根据画的路径填充颜色
+				ctx.globalCompositeOperation='lighter';
+				ctx.arc(round.x,round.y,round.r,0,Math.PI*2,false);//第一个参数表示圆心在x轴的位置，第二参数表示圆心在y轴的位置，第三个参数表示圆的半径，第四个和第五个参数表示弧度，最后一个表示顺时针画的圆
+				ctx.fill();        //填充动作的执行。
+			}
+			
+		canvas.onmousemove=function(ev){
+			for(var i=0;i<2;i++){
+				var rounds={
+					x:Math.round(Math.random()*10-5)+ev.clientX,//表示圆心x轴位置离鼠标在-5至5的位置
+					y:Math.round(Math.random()*10-5)+ev.clientY,//对象之间用逗号隔离
+					r:Math.round(Math.random()*35+10),      //圆的半径设定在10至45之间
+					vx:Math.random()-0.5,
+					vy:Math.random()-0.5,
+					color:color_arr[Math.round(Math.random()*5)]
+				};
+				round_arr.push(rounds);
+				if(round_arr.length>300){
+					round_arr.shift();
+				}
+			}
+			if(onOff1){
+				clearInterval(timer2);
+				timer2=setInterval(round_move,30);
+				onOff1=false;
+			}
+			
+			
+			function round_move(){
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+				for(var i=0;i<round_arr.length;i++){
+					round_arr[i].index=i;
+					round_arr[i].x+=round_arr[i].vx*8;
+					round_arr[i].y+=round_arr[i].vy*8;
+					round_arr[i].r=round_arr[i].r*0.94;
+					if(round_arr[i].r<1){
+					round_arr.splice(round_arr[i].index,1);
+					continue;
+					}
+					in_round(round_arr[i]);
+					if(round_arr.length==0){
+						onOff1=true;
+					}
+				}
+				
+			}
+		}
+			
+		</script>
+		
+		<script>
+			var img=document.getElementById('img');
+			var li=document.getElementsByTagName('li');
+			var color_arr=['deeppink','deepskyblue','yellow','#ddd','#FFA54F','#FA8072','#ADFF2F','#7A67EE','#00BFFF','#B23AEE'];
+			var str='';
+			var onOff=true;
+			for(var i=0;i<10;i++){
+				str+='<li></li>';
+			}
+			img.innerHTML=str;
+			for(var i=0;i<li.length;i++){
+				li[i].style.background=color_arr[i]+' url(../img/logo.png) 270px 60px no-repeat';
+				}
+			li[9].onclick=function(){
+				if(onOff){
+					var a=190;
+					for(var i=li.length-1;i>=0;i--){
+						a+=15;
+						li[i].style.transform='rotate('+a+'deg)';
+					}
+				}else{
+					var a=0;
+					for(var i=0;i<li.length;i++){
+						li[i].style.transform='rotate('+a+'deg)';
+					}
+				}
+				onOff=!onOff;
+				
+			}
+			
+			for(var i=0;i<li.length-1;i++){
+				li[i].index=i;
+				
+				li[i].onclick=function(){
+					var a=270;
+					var b=255;
+					this.style.transform='rotate('+a+'deg)';
+					for(var i=this.index-1;i>=0;i--){
+						a+=15;
+						li[i].style.transform='rotate('+a+'deg)';
+					}
+					for(var i=this.index+1;i<li.length;i++){
+						b-=15;
+						li[i].style.transform='rotate('+b+'deg)';
+					}
+				}
+			}
+			
+		</script>
+	</body>
+</html>

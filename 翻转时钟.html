@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			ul{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			.box{
+				/*width: 200px;
+				height: 300;
+				margin: 100px auto;*/
+				perspective: 800px;
+			}
+			.num{
+				width: 200px;
+				height: 300px;
+				position: relative;
+				transform-style: preserve-3d;
+				float: left;
+				padding-left: 30px;
+			}
+			.num li{
+				width: 200px;
+				height: 150px;
+				border-radius: 30px;
+				background: #000;
+				color: #fff;
+				font: 250px/300px "微软雅黑";
+				text-align: center;
+				position: absolute;
+				
+			/*	opacity: 0.6;*/
+		
+				
+				
+			}
+			.num li:nth-of-type(1){
+				left: 0;
+				top: 0;
+				overflow: hidden;
+				z-index: 4;
+			}
+			.num li:nth-of-type(2){
+				left: 0px;
+				top: 0;
+				height: 300px;
+				z-index: 2;
+				transform:rotateX(-180deg);
+			}
+			
+			.num li:nth-of-type(3){
+				left: 0px;
+				top: 0;
+				height: 300px;
+				z-index: 3;
+				
+			}
+			
+			
+			
+		
+			
+			.num li:nth-of-type(4){
+				left: 0px;
+				top: 0;
+				height: 300px;
+				z-index: 1;
+			
+			}
+			
+			
+			/*#num:hover li:nth-of-type(4){
+				transform-origin: center;
+				transform: rotateX(180deg);
+			}*/
+			
+			/*#num:hover li:nth-of-type(3){
+				z-index: 4;
+			}*/
+		
+		</style>
+	</head>
+	<body>
+		
+		<div id="box">
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<ul class="num">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			
+		</div>
+		
+		<script>
+		
+		var ul=document.getElementsByClassName('num');
+//		var num=0;
+		var timer=null;
+//		var num=0;
+		var num3=0;
+//		timer=setInterval(function(){
+//			num+=9;
+//
+//			li[1].style.transform='rotateX('+(num-180)+'deg)';
+//			li[2].style.transform='rotateX('+num+'deg)';
+//			if(num==180){
+//				num=0;
+//				num1++;
+//				var str='';
+//				for(var i=0;i<4;i++){
+//					if(i%2==0){
+//					str+='<li>'+(num1%10)+'</li>';	
+//					}else{
+//						str+='<li>'+(num1+1)%10+'</li>';
+//					}
+//				}
+//				ul.innerHTML=str;
+////				li[0].innerHTML=num1;
+////				li[1].innerHTML=num1+1;
+////				li[2].innerHTML=num1;
+////				li[3].innerHTML=num1+1;
+//			}
+//		},50);
+//		
+		
+		
+		var t=new Date();
+			var h=t.getHours();
+			var m=t.getMinutes();
+			var s=t.getSeconds();
+			var str0=add0(h)+add0(m)+add0(s);
+			
+			function add0(n){
+				return n<10?'0'+n:''+n;
+			}
+			for(var i=0;i<ul.length;i++){
+				var str='';
+				for(var j=0;j<4;j++){
+					if(j%2==0){
+					str+='<li>'+(str0.charAt(i)%10)+'</li>';	
+					}else{
+					str+='<li>'+(parseInt(str0.charAt(i))+1)%10+'</li>';
+					}
+				}
+				ul[i].innerHTML=str;
+			}
+			setInterval(function(){
+				var t1=new Date();
+				var h1=t1.getHours();
+				var m1=t1.getMinutes();
+				var s1=t1.getSeconds();
+				var str1=add0(h1)+add0(m1)+add0(s1);
+				function time1(obj,num){
+					var num3=0;
+					obj.timer=setInterval(function(){
+						num3+=3;
+						obj.getElementsByTagName('li')[1].style.transform='rotateX('+(num3-180)+'deg)';
+						obj.getElementsByTagName('li')[2].style.transform='rotateX('+num3+'deg)';
+						if(num3==180){
+							num3=0;
+							clearInterval(obj.timer);
+								var str='';
+								for(var j=0;j<4;j++){
+									if(j%2==0){
+									str+='<li>'+(parseInt(num)%10)+'</li>';	
+									}else{
+									str+='<li>'+(parseInt(num)+1)%10+'</li>';
+									}
+								}
+								obj.innerHTML=str;
+								console.log(num);
+						}
+					},16)
+					
+					
+					
+				}
+				
+				for(var i=0;i<str0.length;i++){
+					if(str0.charAt(i)!=str1.charAt(i)){
+						time1(ul[i],str1.charAt(i));
+					}
+				}
+				
+				str0=str1;
+				
+			},1000);
+		</script>
+	</body>
+</html>
