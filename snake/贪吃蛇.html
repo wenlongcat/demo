@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			input{
+				padding: 0;
+				margin: 0;
+			}
+			#box,#btn{
+				width: 800px;
+				height: 600px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -400px;
+				margin-top: -300px;
+				border: 2px solid #4D4D4D;
+			}
+			#btn input{
+				position: absolute;
+				width: 100px;
+				height: 50px;
+				top: -50px;
+			}
+			#btn2{
+				left: 100px;
+			}
+			#btn3{
+				left: 200px;
+			}
+			#btn4{
+				left: 300px;
+			}
+			#box div{
+				width: 20px;
+				position: absolute;
+				height: 20px;
+				background: yellow;
+				border:1px solid #A52A2A;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="btn">
+			<input type="button" value="上" id = "btn1"/>
+			<input type="button" value="下" id = "btn2"/>
+			<input type="button" value="左" id = "btn3"/>
+			<input type="button" value="右" id = "btn4"/>
+			<input type="button" value="重置" id ="start" />
+		</div>
+		<div id="box">
+		</div>
+		<script>
+			var box = document.getElementById("box");
+			var btn = document.getElementById("btn");
+			var inps = btn.getElementsByTagName("input");
+			var start = document.getElementById("start");
+			var aonoff = false;//定义开关false为可以点击
+			var ofoodArr = [];//生成蛇的left  top 值
+			var timer = null;//设置的定时器
+			var a = 0;//左
+			var b = 0;//上
+			var c = 0;//右
+			var d = 0;//下
+			var str1 = "";//用来储存食物
+			start.onclick = function(){
+				window.location.search = 1;
+			}
+			for(var i = 0;i<inps.length;i++){
+				if(i!=3){
+					inps[i].onoff = false;//首先定义开关false为未点击
+				}else{
+					inps[i].onoff = true;//刚开始不能向左走
+				}
+			}
+			var arr = [[0,0],[0,20],[0,40],[0,60]];//最后一个为头，第一个为尾
+			function tab(){//生成蛇
+				var str = "";
+				for(var i = 0;i<arr.length;i++){
+					str += "<div style='top:"+arr[i][0]+"px;left:"+arr[i][1]+"px'></div>";
+				}
+				box.innerHTML = str + str1;
+				var divs = box.getElementsByTagName("div");
+				divs[arr.length-1].style.background = "green";
+				divs[arr.length-1].style.borderRadius = "50%";
+			}
+			function food(){//生成食物
+				var a = 0;//储存生成食物的top值
+				var b = 0;//left值
+				a = Math.floor(Math.random()*30)*20;
+				b = Math.floor(Math.random()*40)*20;
+				str1 = "";
+				str1 = "<div style='top:"+a+"px;left:"+b+"px'></div>"
+				ofoodArr.push([a,b]);
+			}
+			food();
+			tab();
+			function move(atop,aleft){//蛇运动的时候,添加末尾，删除首位
+				arr.push([atop,aleft]);
+				if(ofoodArr[ofoodArr.length-1][0]== arr[arr.length-1][0]&&ofoodArr[ofoodArr.length-1][1]== arr[arr.length-1][1]){
+				//这里不能直接判断ofoodArr[ofoodArr.length-1]== arr[arr.length-1]，要分别拿出里面的值进行判断
+					ofoodArr.shift();
+					food();
+					if(arr[arr.length-1][0]<0||arr[arr.length-1][0]+20>600||arr[arr.length-1][1]<0||arr[arr.length-1][1]+20>800){
+						alert("撞到墙了 Gome over");
+						clearInterval(timer);
+						return;
+					}else{
+						tab();
+					}
+				}else{
+//					var d = (arr.shift());//这里用变量储存返回值会报错
+					if(arr[arr.length-1][0]<0||arr[arr.length-1][0]+20>600||arr[arr.length-1][1]<0||arr[arr.length-1][1]+20>800){
+						alert("撞到墙了 Gome over");
+						clearInterval(timer);
+						return;
+					}else{
+						for(var i = 0;i<arr.length-2;i++){
+							if(arr[arr.length-1][0] == arr[i][0]&&arr[arr.length-1][1] == arr[i][1]){
+								clearInterval(timer);
+								alert("撞到自己了Gome over");
+								arr.pop();//撞到自己时头部已经走了一步，所以这里还原成之前，避免头和身体重合
+								tab();//再次生成蛇
+								return;
+							}else{
+								tab();
+							}
+						}
+					}
+					arr.shift();//删除首位
+				}
+			}
+			
+//			inps[0].onclick = function(){//向上走的时候
+//				if(aonoff==false){
+//					if(!inps[1].onoff){//这里的判断要写在定时器外面
+//						clearInterval(timer);
+//						timer = setInterval(function(){
+//							atop = arr[arr.length-1][0]-20;
+//							aleft = arr[arr.length-1][1];
+//							move(atop,aleft);
+//						},250)
+//					}
+//					this.onoff = true;
+//					inps[2].onoff = false;
+//					inps[3].onoff = false;
+//				}
+//			}
+//			inps[1].onclick = function(){//向下走的时候
+//				if(aonoff==false){
+//					if(!inps[0].onoff){
+//						clearInterval(timer);
+//						timer = setInterval(function(){
+//							atop = arr[arr.length-1][0]+20;
+//							aleft = arr[arr.length-1][1];
+//							move(atop,aleft);
+//						},250)
+//					}
+//					this.onoff = true;
+//					inps[2].onoff = false;
+//					inps[3].onoff = false;
+//				}
+//			}
+//			inps[2].onclick = function(){//向左走的时候
+//				if(!inps[3].onoff){
+//					clearInterval(timer);
+//					timer=setInterval(function(){
+//						atop = arr[arr.length-1][0];
+//						aleft = arr[arr.length-1][1]-20;
+//						move(atop,aleft);
+//					},250)
+//					this.onoff = true;
+//					inps[0].onoff = false;
+//					inps[1].onoff = false;
+//				}
+//			}
+//			inps[3].onclick = function(){//向右走的时候
+//				if(!inps[2].onoff){
+//					clearInterval(timer);//先关闭其他定时器
+//					timer=setInterval(function(){
+//						atop = arr[arr.length-1][0];
+//						aleft = arr[arr.length-1][1]+20;
+//						move(atop,aleft);
+//					},250)
+//					this.onoff = true;
+//					inps[0].onoff = false;
+//					inps[1].onoff = false;
+//				}
+//			}
+			document.onkeydown = function(e){//当按键按下的时候
+				if(e.keyCode == 37){//向左
+					if(a == 0){
+						clearInterval(timer);
+						timer=setInterval(function(){
+							atop = arr[arr.length-1][0];
+							aleft = arr[arr.length-1][1]-20;
+							move(atop,aleft);
+						},100)
+						a++;
+						c++;
+						b = 0;
+						d = 0;
+					}
+				}
+				if(e.keyCode == 38){//向上
+					if(b ==0){
+						clearInterval(timer);
+						timer = setInterval(function(){
+							atop = arr[arr.length-1][0]-20;
+							aleft = arr[arr.length-1][1];
+							move(atop,aleft);
+						},100)
+					}
+					b++;
+					d++;
+					a =0;
+					c=0;
+				}
+				if(e.keyCode == 39){//(ˇˍˇ) 向右
+					if(c == 0){
+						clearInterval(timer);//先关闭其他定时器
+						timer=setInterval(function(){
+							atop = arr[arr.length-1][0];
+							aleft = arr[arr.length-1][1]+20;
+							move(atop,aleft);
+						},100)
+					}
+					c++;
+					a++;
+					b=0;
+					d =0;
+				}
+				if(e.keyCode == 40){//向下
+					if(d == 0){
+						clearInterval(timer);
+						timer = setInterval(function(){
+							atop = arr[arr.length-1][0]+20;
+							aleft = arr[arr.length-1][1];
+							move(atop,aleft);
+						},100)
+					}
+					d++;
+					b++;
+					a = 0;
+					c = 0;
+				}
+			}
+		</script>
+	</body>
+</html>
