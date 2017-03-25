@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{overflow:hidden;
+			width:100%;height:100%;
+			font:18px "微软雅黑";color:#000;/*background:url(img/12.jpg) no-repeat;*/
+			background:#3b3b3b url(1.png) repeat-x;
+			background-size:100% 100%;
+}
+			#wrap{
+				width:500px;height:500px;margin:100px auto;transform-style:preserve-3d;perspective: 1000px;
+				position:relative;
+			}
+			#box{
+				transform-style:preserve-3d;
+				width:100%;
+				height:100%;
+			}
+			ul{margin:0;padding:0;list-style:none;width:100%;height:100%;position:relative;}
+			ul li{
+				position:absolute;transition:all 1s ease;
+				color:#fff;
+				
+			}
+			ul li .all{
+				transition:all 1s ease;
+			}
+			ul li .one{transition: transform 1s ease;}
+			input{
+				width:200px;
+				height:30px;
+				background:#6bf281;
+				text-align:center;
+				line-height:30px;
+				font-size:20px;
+				position:absolute;
+				top:660px;
+				left:50%;
+				margin-left:-100px;
+				border-radius:20px;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">	
+			<div id="box">
+				<ul>
+					
+				</ul>
+			</div>
+		</div>
+		<input type="button" value="按 钮" />
+		<script>
+			var wrap=document.getElementById('wrap');
+			var oBox=document.getElementById('box');
+			var oUl=oBox.getElementsByTagName('ul')[0];
+			var inps=document.getElementsByTagName('input')[0];
+			var aLi=oUl.getElementsByTagName('li');
+			var s='赵钱孙李周吴郑王冯陈楮卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁杜阮蓝闽席季麻强贾路娄危江童颜支冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权逑盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐锺离宇文长孙慕容鲜于闾丘司徒司空丌官司寇仉督子车颛孙端木巫马公西';
+//			var arr=['img/1.jpg','img/1.jpg','img/1.jpg','img/2.jpg','img/2.jpg','img/2.jpg','img/2.jpg','img/3.jpg','img/3.jpg','img/3.jpg','img/3.jpg','img/4.jpg','img/4.jpg'];
+			var num=0;
+			var layer=0;
+			var wordNum=-1;
+			var circleArr=[];
+			for(var i=4;i<13;i++){
+				num=i*i+(i+1)*(i+1);
+				if(num>=s.length){
+					layer=(i-1)*2+1;
+					break;
+				}
+				layer=(i-1)*2+1;
+			}
+			for(var i=0;i<layer;i++){
+				if(i<(layer+1)/2){
+					wordNum+=2;
+				}else{
+					wordNum-=2;
+				}
+				circleArr.push(wordNum);
+			}
+			var theta=Math.PI/(circleArr.length-1);
+			var phi=0;
+			var r=200;
+			num=0;
+			for(var i=0;i<circleArr.length;i++){
+				phi=2*Math.PI/circleArr[i];
+				for(var j=0;j<circleArr[i];j++){
+					var li=document.createElement('li');
+					li.innerHTML=s[num];
+					num++;
+					drawCircle(li,theta,phi,i,j);
+					oUl.appendChild(li);
+				}
+			}
+			for(var i=0;i<aLi.length;i++){
+				aLi[i].style.transform='translate3D('+aLi[i].circleX+'px,'+aLi[i].circleY+'px,'+aLi[i].circleZ+'px) rotateY('+aLi[i].circlePhi+'rad) rotateX('+aLi[i].circleTheta+'rad)';
+			}
+			var angleX=0;
+			var angleY=0;
+			var timer=setInterval(function(){
+				angleY++;
+				oBox.style.transform='rotateY('+angleY+'deg) rotateY('+angleX+'deg)';
+			},60);
+			function drawCircle(obj,theta,phi,i,j){
+				obj.circleX=r*Math.sin(theta*i)*Math.sin(phi*j)+250;
+				obj.circleY=-r*Math.cos(theta*i)+250;
+				obj.circleZ=r*Math.sin(theta*i)*Math.cos(phi*j);
+				obj.circleTheta=theta*(circleArr.length-i)-Math.PI/2;
+				obj.circlePhi=phi*j;
+				obj.bigcircleX=(r+2000)*Math.sin(theta*i)*Math.sin(phi*j)+200;
+				obj.bigcircleY=-(r+2000)*Math.cos(theta*i)+200;
+				obj.bigcircleZ=(r+2000)*Math.sin(theta*i)*Math.cos(phi*j);
+				obj.bigcircleTheta=theta*(circleArr.length-i)-Math.PI/2;
+				obj.bigcirclePhi=phi*j;
+			}
+			inps.onclick=function(){
+				for(var i=0;i<aLi.length;i++){
+					aLi[i].className='all';
+					aLi[i].style.transform='translate3D('+aLi[i].bigcircleX+'px,'+aLi[i].bigcircleY+'px,'+aLi[i].bigcircleZ+'px) rotateY('+aLi[i].bigcirclePhi+'rad) rotateX('+aLi[i].bigcircleTheta+'rad)';
+					aLi[i].style.opacity=0;
+					setTimeout(function(){
+						for(var i=0;i<aLi.length;i++){
+							aLi[i].className='one';
+							aLi[i].style.opacity=1;
+							aLi[i].style.transform='translate3D('+aLi[i].circleX+'px,'+aLi[i].circleY+'px,'+aLi[i].circleZ+'px) rotateY('+aLi[i].circlePhi+'rad) rotateX('+aLi[i].circleTheta+'rad)';
+							
+						}
+					},1050);
+				}
+			}
+			wrap.onmousedown=function(e){
+				clearInterval(timer);
+				var disX=e.clientX;
+				var disY=e.clientY;
+				var X=0;
+				var Y=0;
+				document.onmousemove=function(e){
+					var X=e.clientX-disX;
+					var Y=e.clientY-disY;
+					oBox.style.transform='rotateX('+(angleX-Y)+'deg) rotateY('+(angleY+X)+'deg)';
+				}
+				document.onmouseup=function(){
+					document.onmouseup=document.onmousemove=null;
+					angleX=angleX-Y;
+					angleY=angleY+X;
+					if(Y==0&&X==0){
+						X=300;
+					}
+					timer=setInterval(function(){
+						angleX-=Y/100;
+						angleY+=X/100;
+					oBox.style.transform='rotateX('+angleX+'deg) rotateY('+angleY+'deg)';
+					},60)
+				}
+				return false;
+			}
+		</script>
+	</body>
+</html>
