@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		请输入QQ号码:<br />
+		<input type="text" id="text" value="" />
+		<input type="button" id="btn" value="验证" /><br />
+		1、有没有输入<br />
+		2、输入的是不是数字<br />
+		3、不能有0在前面<br />
+		4、不能是小数<br />
+		5、输入的数字必须在5位以上、10位以内<br />
+		<script>
+			var Text = document.getElementById("text");
+			var btn = document.getElementById("btn");
+			
+			btn.onclick = function(){//只要是读出来的都是字符串
+				if(Text.value == ""){
+					alert("请输入数据");
+				}else if(Text.value.charAt(Text.value[0]) == " "){
+						alert("开头不能为空格");
+				}else if(Text.value.charAt(Text.value[length-1]) == " "){
+						alert("结尾不能为空格");
+					}
+				else if(Number(Text.value) == Number(Text.value)){
+					if(String(Text.value)[0] == 0){
+						alert("第一位不能为0")
+					}
+				else if(parseFloat(Text.value) == parseInt(Text.value) && Text.value.length == String(parseInt(Text.value)).length){
+					if(String(Text.value).length<=10 && 5<=String(Text.value).length){
+							alert("恭喜恭喜");
+					}else{
+							alert("输入的要为5位以上，10位以内的数字")
+					}
+				}else{
+						alert("输入的不能为小数");
+					}
+				}else{
+					alert("请输入数字");
+				}
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
