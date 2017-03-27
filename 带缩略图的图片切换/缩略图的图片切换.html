@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			img{
+				border: none;
+				vertical-align: top;
+			}
+			#box{
+				width: 600px;
+				height: 400px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -300px;
+				margin-top: -200px;
+			}
+			#box img{
+				width: 600px;
+				height: 400px;
+			}
+			#box2{
+				position: absolute;
+				left: 30%;
+				top: 90%;
+			}
+			#box2 div{
+				float: left;
+				margin-left: 10px;
+				position: relative;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: gray;
+			}
+			#leftarr,#rightarr{
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				background: rgba(100,0,0,0.6);
+				top: 45%;
+			}
+			#leftarr{
+				left: 10px;
+			}
+			#rightarr{
+				right: 10px;
+			}
+			#box2 img{
+				width: 6px;
+				height: 6px;
+				position: absolute;
+				transition: 2s;
+				top: 50%;
+				opacity: 0;
+				left: 50%;
+				margin-left: -3px;
+				margin-top: -3px;
+			}
+			#box2 .active{
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<img src="img/1.jpg">
+			<span id="leftarr"></span>
+			<span id="rightarr"></span>
+			<div id="box2">
+			</div>
+		</div>
+		<script>
+			var box = document.getElementById("box");
+			var imgs = box.getElementsByTagName("img");
+			var spans = box.getElementsByTagName("span");
+			var box2 = document.getElementById("box2");
+			var arr = ["img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg","img/5.jpg","img/6.jpg","img/7.jpeg"];
+			var str = "";
+			var num = 0;
+			for(var i =0;i<7;i++){//在box2中自动生成原点
+				str += "<div><img src='"+arr[i]+"'></div>"
+			}
+			box2.innerHTML = str;
+			var divs = box2.getElementsByTagName("div");
+			var imgs2 = box2.getElementsByTagName("img");
+			for(var i = 0;i<divs.length;i++){
+				divs[i].index = i;
+				divs[i].onoff = false;//对应没有点中
+				divs[i].onmouseover = function(){
+					for(var j = 0;j<divs.length;j++){
+						if(!divs[j].onoff){
+							divs[j].className = "";
+						}
+					}
+					divs[this.index].className = "active";
+					for(var a = 0;a<divs.length;a++){
+						imgs2[a].style = "left: 3px;top: 3px";//注意这里的定位的left 和top要写在width和height 的上面
+						imgs2[a].style.width = "6px";
+						imgs2[a].style.height = "6px";
+						imgs2[a].style.opacity = 0;
+					}
+					imgs2[this.index].style = "left: -20px;top: -46px";//注意这里的定位的left 和top要写在width和height 的上面
+					imgs2[this.index].style.width = "60px";
+					imgs2[this.index].style.height = "40px";//这里的transition只能控制单一的样式，控制多个样式的时候
+					imgs2[this.index].style.opacity = 1;
+//					move(imgs2[this.index],{"left":-20,"top": -46},1000);
+//					move(imgs2[this.index],{"width":60,"height": 40},1000);
+//					move(imgs2[this.index],{"opacity": 1},1000);
+
+				}
+				divs[i].onmouseout = function(){
+					for(var j = 0;j<divs.length;j++){
+						if(!divs[j].onoff){
+							divs[j].className = "";
+						}
+					}
+					for(var a = 0;a<divs.length;a++){
+						imgs2[a].style = "left: 3px;top: 3px";//注意这里的定位的left 和top要卸载width和height 的后面
+						imgs2[a].style.width = "6px";
+						imgs2[a].style.height = "6px";
+						imgs2[a].style.opacity = 0;
+					}
+				}
+				divs[i].onclick = function(){
+					for(var a = 0;a<divs.length;a++){
+						divs[a].onoff = false;
+					}
+					imgs[0].src = arr[this.index];
+					divs[this.index].className = "active";
+					this.onoff = true;
+				}
+			}
+			spans[0].onclick = function(){
+				if(num == 0){
+					num = divs.length;
+				}
+				num--;
+				tab(num);
+				console.log(divs.length)
+			}
+			spans[1].onclick = function(){
+				num++;
+				num %= divs.length;
+				tab(num);
+				console.log(divs.length)
+			}
+			function tab(num){//封装函数点击改变图片地址
+				imgs[0].src = arr[num];
+				for(var j = 0;j<divs.length;j++){
+					divs[j].className = "";
+				}
+				for(var a = 0;a<divs.length;a++){
+					divs[a].onoff = false;
+				}
+				this.onoff = true;
+				divs[num].className = "active";
+			}
+		  function move (obj,object1,duration) {//运动函数
+	    	var startTime = new Date();
+	    	var d = duration;
+	    	var j = {};
+	    	for( var a in object1){
+	    		j[a] = {};
+	    		console.log(j[a])
+	    		j[a].b = parseFloat(getComputedStyle(obj)[a]);
+	    		console.log(j[a].b)
+	    		j[a].c = object1[a] - j[a].b; 
+	    	}
+	    	obj.timer = setInterval(function(){
+	    		var t = new Date() - startTime;
+	    		if(t>=d){
+	    			t = d;
+	    		}
+	    		for(var a in j){
+	    			var c = j[a].c;
+	    			var b = j[a].b;
+					var v = c/d*t+b;
+	    			if(a == "opacity"){
+	    				obj.style[a] = v ;
+	    			}else{
+	    				obj.style[a] = v + "px";
+	    			}
+	    		}
+	    		if(t==d){
+	    			clearInterval(obj.timer);
+	    		}
+	    	},16)
+	    }
+		</script>
+	</body>
+</html>
