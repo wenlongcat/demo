@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				margin: 0;
+			}
+			#box{
+				width: 400px;
+				height: 400px;
+				float: left;
+				border: 2px solid red;
+				background: url(small.jpg);
+				background-size: 400px 400px;
+			}
+			#col{
+				width: 200px;
+				height: 200px;
+				position: absolute;
+				background: rgba(100,0,0,0.3);
+			}
+			#box2{
+				width: 500px;
+				height: 500px;
+				border: 2px solid red;
+				float: left;
+				margin-left: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="col"></div>
+		</div>
+		<div id="box2">
+			
+		</div>
+		<script>
+			var col = document.getElementById("col");
+			var box = document.getElementById("box");
+			var box2 = document.getElementById("box2");
+			var a = 0;
+			var b = 0;
+			box.onmousemove = function(e){
+				if(e.clientX>=102&&e.clientX<=304){
+					col.style.left = Math.floor(e.clientX-100)+"px";
+					a = Math.floor(e.clientX-100);
+				}
+				if(e.clientY>=102&&e.clientY<=304){
+					col.style.top = e.clientY-100+"px";
+					b = Math.floor(e.clientY-100);
+				}
+				col.style.display = "block";
+				box2.style.display = "block";
+				box2.style.background = "url(big.jpg) no-repeat";
+				box2.style.backgroundSize = 400*(500/200)+"px "+400*(500/200)+"px "
+				box2.style.backgroundPosition =	(-a*(500/200))+"px " +(-b*(500/200))+"px";//这里的尺寸是右边盒子与左边小红div的尺寸的比较
+			}
+			box.onmouseout = function(){
+				col.style.display = "none";
+				box2.style.display  = "none";
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				margin: 0;
+			}
+			#box{
+				width: 350px;
+				height: 350px;
+				border: 1px solid #0000FF;
+				background: url(small.jpg) no-repeat;
+				background-size: 350px 350px;
+				position: relative;
+				margin-left: 100px;
+				float: left;
+			}
+			#wrap{
+				width: 175px;
+				height: 175px;
+				background: yellow;
+				opacity: 0.3;
+				position: absolute;
+				display: none;
+				left: 0;
+				top: 0;
+			}
+			#right{
+				width: 500px;
+				height: 500px;
+				border: 1px solid #0000FF;
+				float: left;
+				margin-left: 20px;
+				background: url(big.jpg) no-repeat;
+				background-size:  1000px 1000px;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="wrap"></div>
+		</div>
+		<div id="right"></div>
+		<script>
+			var box = document.getElementById("box");
+			var wrap = document.getElementById("wrap");
+			var right = document.getElementById("right");
+			box.onmousemove = function(e){
+				wrap.style.display = "block";
+				right.style.display = "block";
+				var x = e.clientX - box.getBoundingClientRect().left - wrap.offsetWidth/2;
+				var y = e.clientY - box.getBoundingClientRect().top - wrap.offsetHeight/2;
+				var maxl = box.clientWidth - wrap.offsetWidth;
+				var maxt = box.clientHeight - wrap.offsetHeight;
+				if(x<0){
+					x = 0;
+				}
+				if(x>maxl){
+					x = maxl;
+				}
+				if(y<0){
+					y = 0;
+				}
+				if(y>maxt){
+					y = maxt;
+				}
+				wrap.style.left = x +"px";//这里用wrap.style = "left: """的方法会覆盖前面的样式
+				wrap.style.top = y +"px";
+				right.style.backgroundPosition = -500*x / maxl+"px "+-500*y / maxt+"px";
+			}
+			box.onmouseout = function(){
+				wrap.style.display = "none";
+				right.style.display = "none";
+			}
+		</script>
+	</body>
+</html>
