@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			ul{
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			#dayte{
+				width: 700px;
+				height: 50px;
+				margin-bottom: 10px;
+			}
+			#dayte li,#content li{
+				float: left;
+				box-sizing: border-box;
+				border: 1px solid #000;
+				line-height: 50px;
+				text-align: center;
+				width: 100px;
+				height: 50px;
+			}
+			#content{
+				width: 700px;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="dayte">
+			<li>日</li>
+			<li>一</li>
+			<li>二</li>
+			<li>三</li>
+			<li>四</li>
+			<li>五</li>
+			<li>六</li>
+		</ul>
+		<ul id="content">
+		</ul>
+		
+		<script>
+			var content = document.getElementById("content");
+			//获取这个月第一天是周几
+			var now = new Date();
+			now.setDate(1);//设置日期为这个月的第一天
+			var week = now.getDay();//这个月的第一天是周几
+			
+			var nowMonth = now.getMonth();//获取当月是几月（月份是从0开始计算的）
+			nowMonth++;
+			now.setMonth(nowMonth);//设置月份为下一个月
+			now.setDate(0);//设置日期为下个月的第0天（即上个月的最后一天）
+			
+			var mothLength = now.getDate();//获取当月有多少天
+			var str = "";
+			for(var i = 0;i<mothLength+week;i++){
+				if(i<week){//当i值小于第一天是周几的值时，清空1号之前的位置
+					str += "<li style='opacity: 0'></li>";
+				}else{
+					str += "<li>"+(i-week+1)+"</li>";
+				}
+			}
+			content.innerHTML = str;
+		</script>
+	</body>
+</html>

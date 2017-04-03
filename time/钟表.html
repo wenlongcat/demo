@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#box{
+				width: 500px;
+				height: 500px;
+				border: 1px solid #000;
+				margin: 0 auto;
+				background: rgba(0,0,0,0.5);
+				position: relative;
+				border-radius: 50%;
+			}
+			#box .div1{
+				width: 2px;
+				height: 6px;
+				background: #fff;
+				position: absolute;
+				left: 249px;/*//定位中点,定位的元素也要是中点*/
+				top: 0;
+				transform: rotate(0deg);
+				transform-origin: 1px 250px;/*//旋转基点都是从元素的左上角开始转的*/
+			/*	transition: 3s;*/
+			}
+			
+			#hour{
+				width: 6px;
+				height: 180px;
+				background: rgba(255,0,0,0.6);
+				position: absolute;
+				left: 247px;
+				top: 100px;
+				z-index: 3;
+				transform: rotate(0deg);
+			/*	transition: 5s;*/
+				transform-origin: 3px 150px;
+			}
+			#min{
+				width: 4px;
+				height: 200px;
+				background: blueviolet;
+				position: absolute;
+				left: 248px;
+				top: 80px;
+				transform: rotate(0deg);
+				z-index: 2;
+				/*transition: 5s;*/
+				transform-origin: 2px 170px;
+			}
+			#sec{
+				width: 2px;
+				height: 220px;
+				background: yellow;
+				position: absolute;
+				left: 249px;
+				top: 60px;
+				transform: rotate(0deg);
+				/*transition: 5s;*/
+				transform-origin: 1px 190px;
+			}
+			#ran{
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background: green;
+				position: absolute;
+	            left: 235px;
+	            z-index: 5;
+	            top: 235px;
+			}
+			/*#box:hover #min{
+				transform: rotate(360deg);
+			}*/
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div class="div1"></div>
+		</div>
+		<script>
+			var box = document.getElementById("box");
+			var str = "";
+			
+			for(var i = 0;i<60;i++){
+				if(i%5){//当为小时时表盘上的指针长度变长点
+					str +="<div class='div1' style='transform: rotate("+i*6+"deg)'></div>";
+				}else{
+					str +="<div class='div1' style='transform: rotate("+i*6+"deg);height: 15px'></div>";
+				}
+			}
+			str += "<div id='hour'></div><div id='min'></div><div id='sec'></div><div id='ran'></div>";
+			box.innerHTML = str;
+			
+			var hour = document.getElementById("hour");
+			var min = document.getElementById("min");
+			var sec = document.getElementById("sec");
+			tab();
+			setInterval(tab,16);
+			function tab(){
+				var nowTime = new Date();//获取系统当前时间
+				var s = nowTime.getSeconds();//秒
+				var m = nowTime.getMinutes();//
+				var h = nowTime.getHours();//小时
+				var ms = nowTime.getMilliseconds();//毫秒
+				
+				sec.style.transform = "rotate("+(s*6+ms/1000*6)+"deg)";//毫秒和秒都是从0开始的
+				min.style.transform = "rotate("+(m*6+s/60*6)+"deg)";
+				hour.style.transform = "rotate("+(h*30+m/60*6)+"deg)";
+			}
+		</script>
+	</body>
+</html>

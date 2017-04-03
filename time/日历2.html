@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			ul{
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			#heard{
+				width: 700px;
+				height: 50px;
+				margin-bottom: 10px;
+			}
+			#heard li,#content li{
+				width: 100px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				float: left;
+				font-weight: bold;
+				border: 1px solid #000;
+				box-sizing: border-box;
+			}
+			#content{
+				width: 700px;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="heard">
+			<li>日</li>
+			<li>一</li>
+			<li>二</li>
+			<li>三</li>
+			<li>四</li>
+			<li>五</li>
+			<li>六</li>
+		</ul>
+		<ul id="content">
+		</ul>
+		<script>
+			var content = document.getElementById("content"); 
+			var now = new Date();//获取当前时间
+			now.setDate(1);//设置当前时间为当月第一天
+			var date1 = now.getDay();//获取当月第一天为周几
+			
+			var nowMonth = now.getMonth();//获取当前时间的月份
+			nowMonth++;//下个月的月份
+			now.setMonth(nowMonth);//设置为下一个月
+			now.setDate(0);//设置下一个月的第0天（即当月最后一天）
+			var mothLength = now.getDate();//获取当月的最后一天的号数
+			var str ="";
+			
+			for(var i = 0;i<mothLength+date1;i++){
+				if(i<date1){
+					str += "<li style='opacity:0'></li>"
+				}else{
+					str += "<li>" +(i-date1+1) + "</li>"
+				}
+			}
+			content.innerHTML = str;
+		</script>
+	</body>
+</html>
