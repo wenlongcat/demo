@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>招贤纳士-社会招聘</title>
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<!--<base target="_blank" />-->
+		<script src="js/data.js"></script>
+	</head>
+
+	<body>
+		<div id="wrap">
+			<div class="left">
+				<h2>招贤纳士</h2>
+				<ul>
+					
+				</ul>
+			</div>
+			<div class="right">
+				<div class="title">
+					<img src="img/shzp.gif" />
+				</div>
+				<div class="info" id="info1">
+					 <!--<p class="zp">
+	        			<span><a href="">★ 职位需求：测试工程师【社会招聘】</a></span>
+	         			<span>需求人数：2名</span>
+	     				<span class="date">2013年7月30日</span>
+        			</p>
+      				<p class="yq">1.计算机或相关专业本科以上学历；2.从事软件测试工作3年及以上；3.具备良好的沟通能力和快速学习能力；4.精通测试策略和方法、测试用例设计；5.熟悉DB2、AIX等平台的基本操作；6.具备2年以上金...[<a href="">查看详情</a>]
+        			</p>
+
+			      	<p class="zp">
+			        	<span><a href="">★ 职位需求：测试工程师【社会招聘】</a></span>
+			          <span>需求人数：12名</span>
+			         	<span class="date">2013年7月30日</span>
+			        </p>
+      				<p class="yq">1.计算机或相关专业本科以上学历；2.从事软件测试工作3年及以上；3.具备良好的沟通能力和快速学习能力；4.精通测试策略和方法、测试用例设计；5.熟悉DB2、AIX等平台的基本操作；6.具备2年以上金...[<a href="">查看详情</a>]
+        			</p>
+
+			      	<p class="zp">
+			        	<span><a href="">★ 职位需求：测试工程师【社会招聘】</a></span>
+			          <span>需求人数：21名</span>
+			         	<span class="date">2013年7月30日</span>
+			        </p>
+			      	<p class="yq">1.计算机或相关专业本科以上学历；2.从事软件测试工作3年及以上；3.具备良好的沟通能力和快速学习能力；4.精通测试策略和方法、测试用例设计；5.熟悉DB2、AIX等平台的基本操作；6.具备2年以上金...[<a href="">查看详情</a>]
+			        </p> -->
+
+				</div>
+				<div class="pages">
+					<span class="prev" id="prev1">
+			          <a href="javascript:;">
+			            <img src="img/pre.gif">
+			          </a>
+       				 </span>
+					<span class="next" id="next1">
+			          <a href="javascript:;">
+			            <img src="img/next.gif">
+			          </a>
+	    			</span>
+					<p id="page1">
+					<!--<span class="focus">
+			            <a href="javascript:;">1</a>
+			          </span>
+			          <span>
+			            <a href="javascript:;">2</a>
+			          </span>
+			          <span>
+			            <a href="javascript:;">3</a>
+			          </span> -->
+					</p>
+	
+				</div>
+	
+			</div>
+			<div class="clear"></div>
+		</div>
+	</body>
+	<script>
+		var wrap = document.getElementById("wrap");
+		var oleft = wrap.getElementsByClassName("left")[0];
+		var info1 = document.getElementById("info1");
+		var page1 = document.getElementById("page1");
+		var title = wrap.getElementsByClassName("title")[0];
+		var arr = ["sh","xy"];
+		var sea = window.location.search;
+		if(sea == ""){
+			sea = arr[0];
+		}else{
+			sea = window.location.search.substr(1);
+		}
+		var hash = Number(window.location.hash.substr(1));
+		if(hash == ""){
+			hash = 0;
+		}
+		oleft.children[1].innerHTML = "<li ><a href='javascript:;'>"+aData.list[0].text+"</a></li><li><a href='javascript:;'>"+aData.list[1].text+"</a></li> ";
+		var lis = oleft.getElementsByTagName("li");
+		for(var i = 0;i<lis.length;i++){
+			lis[i].index = i;
+			lis[i].children[0].onclick = function(){//li点击的时候
+				window.location.hash = "";//当点击切换的时候清空hash，而不是赋值为0，避免#00的错误
+				window.location.search = arr[this.parentNode.index];
+			}
+			for(var j = 0;j<lis.length;j++){
+				lis[j].className = "";
+			}
+			if(sea == "sh"){
+				lis[0].className = "focus";
+			}
+			if(sea == "xy"){
+				lis[1].className = "focus";
+			}
+			title.children[0].src = aData[sea].img;
+		}
+		tab(sea,hash);//初始
+		function tab(changSea,changeSh){//封装函数每次生成2个
+			var str = "";//存储info1中的信息
+			if(changeSh<aData[changSea].text.length){
+				for(var j = changeSh;j<changeSh+2;j++){
+					if(aData[changSea].text[j]){//判断text是否存在，存在则生成
+						str += ' <p class="zp"><span><a href="">★ 职位需求：'+aData[changSea].text[j].zw+'</a></span><span>需求人数：'+aData[changSea].text[j].rs+'名</span><span class="date">'+aData.date(aData[changSea].text[j].sj)+'</span></p><p class="yq">'+aData[changSea].text[j].info[0].l.join("")+'[<a href="">查看详情</a>]</p>';
+					}
+				}
+			}
+			info1.innerHTML = str;
+			cg_self();
+			cg_self1();//每次生成时给对应的a添上链接地址
+		}
+		osea(sea);
+		clear();
+		function osea(gSea){//生成span
+			var str1 = "";
+			for(var i = 0;i<Math.ceil(aData[gSea].text.length/2);i++){//社会招聘
+				str1 += '<span ><a href="javascript:;">'+(i+1)+'</a></span>';
+			}
+			page1.innerHTML = str1;
+			var spans = page1.getElementsByTagName("span");
+			for(var i = 0;i<spans.length;i++){
+				spans[i].index = i;
+				spans[i].onclick = function(){
+					window.location.hash = (this.index)*2;
+				}
+			}
+		}
+		window.onhashchange = function(){//当hash值改变时
+		 	hash = Number(window.location.hash.substr(1));
+			tab(sea,hash);
+			clear();
+		}
+		function clear(){//清空所有span的class，hash对应的span的class变为focus
+			var spans = page1.getElementsByTagName("span");
+			for(var i = 0;i<spans.length;i++){
+				spans[i].className = "";
+			}
+			if(hash >=0){
+				spans[hash/2].className = "focus";	
+			}
+		}
+		var prev1 = document.getElementById("prev1");
+		var next = document.getElementById("next1");
+		prev1.onclick = function(){//上一页
+			if(hash>0){
+				hash = Number(window.location.hash.substr(1))-2;
+				window.location.hash = Number(window.location.hash.substr(1))-2;//当点击上一页时要重新给hash赋值
+			}
+			tab(sea,hash);
+			clear();
+		}
+		next1.onclick = function(){//下一页
+			var spans = page1.getElementsByTagName("span");
+			if( hash<(spans.length-1)*2){
+				hash = Number(window.location.hash.substr(1))+2;
+				window.location.hash = Number(window.location.hash.substr(1))+2;//当点击上一页时要重新给hash赋值
+			}
+			tab(sea,hash);
+			clear();
+		}
+		cg_self();
+		function cg_self(){
+			var zps = info1.getElementsByClassName("zp");
+			for(var i = 0;i<zps.length;i++){
+				zps[i].index = i;
+				var a0 = zps[i].getElementsByTagName("a")[0];
+				a0.onclick = function(){//这里用a0的话就会是最后一个a0,故这里用this
+					this.href = "content.html?"+sea+"#"+(hash+this.parentNode.parentNode.index)+"";
+					this.target = "_self";//在新窗口打开
+				}
+			}
+		}
+		function cg_self1(){
+			var yqs = info1.getElementsByClassName("yq");
+			for(var i = 0;i<yqs.length;i++){
+				yqs[i].index = i;
+				var a0 = yqs[i].getElementsByTagName("a")[0];
+				a0.onclick = function(){//这里用a0的话就会是最后一个a0,故这里用this
+					this.href = "content.html?"+sea+"#"+(hash+this.parentNode.parentNode.index)+"";
+					this.target = "_self";
+				}
+			}
+		}
+	</script> 
+</html>
