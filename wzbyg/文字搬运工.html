@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			ul{
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			textarea{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 700px;
+				height: 300px;
+				border: 10px solid #A52A2A;
+				background: gray;
+				position:absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -350px;
+				margin-top: -150px;
+			}
+			#content{
+				width: 680px;
+				position:absolute;
+				top: 10px;
+				left: 10px;
+				height: 280px;
+				background: #fff;
+			}
+			#textArea{
+				float: left;
+				height: 260px;
+				width: 260px;
+				margin: 10px;
+				border: 1px dashed #000000;
+				padding: 10px;
+				line-height: 20px;
+				font-size: 20px;
+				box-sizing: border-box;
+				background: #ADFF2F;
+			}
+			#rightText{
+				float: right;
+				width: 260px;
+				height: 260px;
+				margin: 10px;
+				border: 1px dashed #000000;
+				padding: 10px;
+				background: #CCCCCC;
+				line-height: 20px;
+				font-size: 20px;
+				box-sizing: border-box;
+				word-break: break-all;
+			}
+			#click{
+				position: absolute;
+				top: 10px;
+				left: 280px;
+				width: 120px;
+				height: 40px;
+				text-align: center;
+				line-height: 40px;
+				font-size: 20px;
+				color: #fff;
+				background: red;
+			}
+			#math{
+				position: absolute;
+				top: 80px;
+				width: 100px;
+				left: 50%;
+				margin-left: -50px;
+				text-align: center;
+			}
+			#xbox{
+				position: absolute;
+				top: 100px;
+				left: 50%;
+				margin-left: -56px;
+			}
+			#xbox li{
+				float: left;
+				width: 10px;
+				height: 10px;
+				background: rgba(100,0,0,0.3);
+				margin:2px;
+			}
+			#xbox .active{
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="content">
+				<textarea  id="textArea" ></textarea>
+				<div id="click">文字向右移</div>
+				<div id="math">
+					<span>0</span>/
+					<span>0</span>
+				</div>
+				<ul id="xbox">
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+				<div id="rightText"></div>
+			</div>
+		</div>
+		<script>
+			var textArea = document.getElementById("textArea");
+			var click = document.getElementById("click");
+			var rightText = document.getElementById("rightText");
+			var lis = document.getElementsByTagName("li");
+			var spans = document.getElementsByTagName("span");
+			var str1 = "";
+			var str2 = "";
+			var timer = null;
+			var num = 0;
+			click.onoff = false;//没有点时
+			
+			function tab(){
+				str1 = textArea.value;
+				str2 += str1.slice(0,1);
+				str1 = str1.slice(1);
+				textArea.value = str1;
+				rightText.innerHTML = str2;
+			}
+			click.onclick = function(){
+				num = 0;
+				var textlg = textArea.value.length;
+				spans[1].innerHTML = textlg;
+				timer = setInterval(function(){
+					spans[0].innerHTML = num;
+					for(var i = 0;i<lis.length;i++){
+						lis[i].className = "";
+					}
+					lis[num%lis.length].className = "active";
+					tab();
+					if(num == textlg){
+						clearInterval(timer);
+						for(var i = 0;i<lis.length;i++){
+							lis[i].className = "";
+						}
+						str2 = "";
+					}
+					num++;
+				},50)
+			}
+		</script>
+	</body>
+</html>
+	
